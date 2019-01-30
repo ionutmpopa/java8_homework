@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="Test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/z003tx8n/Desktop/Scoala IT - 20 - 24 noiembrie/junit-4.10.jar"/>
+	<classpathentry kind="output" path="out/production/Java8_homework"/>
+</classpath>
