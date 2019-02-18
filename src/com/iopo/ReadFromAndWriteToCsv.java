@@ -17,8 +17,8 @@ public class ReadFromAndWriteToCsv {
 		return employee;
 	}
 
-	public List<Employee> readFromFileAndPassResultsToList(String fileToBeParsed, int myArg,
-			boolean headerTrueOrFalse) {
+	private List<Employee> readFromFileToList(String fileToBeParsed, int myArg,
+                                              boolean headerTrueOrFalse) {
 
 		List<Employee> myEmList = new ArrayList<>();
 		Path theFile = Paths.get(fileToBeParsed);
@@ -29,8 +29,7 @@ public class ReadFromAndWriteToCsv {
 			String line;
 			int iteration = 0;
 			while ((line = reader.readLine()) != null) {
-				// Here we make sure that, when there's a header, it will not be
-				// taken into consideration.
+				// Here we make sure that, when there's a header, it will not be taken into consideration.
 				if (headerTrueOrFalse) {
 					if (iteration == 0) {
 						iteration++;
@@ -70,26 +69,22 @@ public class ReadFromAndWriteToCsv {
 		return null;
 	}
 
-	public void orderNamesAndWriteToFile(List<Employee> input, String output) {
+	private List<Employee> orderEmployeesByName (String fileToBeParsed, int month, boolean headerTrueOrFalse) {
 
-		Writer writer = null;
+	    List<Employee> intermediateList = readFromFileToList(fileToBeParsed, month, headerTrueOrFalse);
+        Collections.sort(intermediateList, Comparator.comparing(Employee::getFirstName));
+        return intermediateList;
+    }
 
-		try {
-			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(output), "UTF-8"));
-			Collections.sort(input, Comparator.comparing(Employee::getFirstName));
+	public void writeToFile(String file, int month, boolean headerOrNot, String output) {
 
-			for (Employee myEmployee : input) {
+		try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(output), "UTF-8"))) {
+			for (Employee myEmployee : orderEmployeesByName(file, month, headerOrNot)) {
 				System.out.println(myEmployee);
 				writer.write(myEmployee + "\n");
 			}
 		} catch (IOException e) {
 			e.getStackTrace();
-		} finally {
-			try {
-				writer.close();
-			} catch (Exception e) {
-				e.getStackTrace();
-			}
 		}
 	}
 }
